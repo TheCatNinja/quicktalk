@@ -7,7 +7,7 @@ typedef enum{
     REPORT_VULGAR,
     REPORT_FAKE,
     REPORT_INAPPRIOPRIATE
-} ReportType;
+}ReportType;
 
 typedef enum{
     MODSTAT_TO_VERIFY,
@@ -21,7 +21,11 @@ typedef struct Post {
     char author[100];
     char content[280];
     ReportType report;
+    int reportsCount;
+    ModerationStatus status;
 
-} Post;
+}Post;
+
+void printPost(const Post *p);
 
 #endif
