@@ -1,0 +1,1 @@
+Aby uruchomić program należy będąc w katalogu, w którym znajdują się pliki programu (moderation.c itd.) włączyć terminal i wpisać `mingw32-make`, a następnie `.\app`.

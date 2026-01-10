@@ -1,0 +1,19 @@
+CC=gcc
+CFLAGS=-Wall -Wextra -std=c11
+
+all: app
+
+app: main.o moderation.o structs.o
+	$(CC) $(CFLAGS) -o app main.o moderation.o structs.o
+
+main.o: main.c structs.h
+	$(CC) $(CFLAGS) -c main.c
+
+moderation.o: moderation.c structs.h
+	$(CC) $(CFLAGS) -c moderation.c
+
+structs.o: structs.c structs.h
+	$(CC) $(CFLAGS) -c structs.c
+
+clean:
+	rm -f *.o app
