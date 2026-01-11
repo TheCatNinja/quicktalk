@@ -1,20 +1,21 @@
 #include <stdio.h>
-#include "structs.h"
-
-Post* addPost(const char *author, const char *content, ReportType report, int reportsCount);
-
-void printPost(const Post *p);
+#include "moderation.h"
 
 int main() {
-    Post *p = addPost("TestUser", "To jest testowy post", REPORT_SPAM, 5);
+    printf("Inicjowanie listy...");
+    initList();
 
-    if (p == NULL) {
-        printf("Nie udało się dodać posta.\n");
-        return 1;
-    }
+    printf("Test: dodawanie posta\n");
+    addPost("TestUser", "Testowy post", REPORT_SPAM, 3);
 
-    printf("Dodano post! Oto jego dane:\n\n");
-    printPost(p);
+    printf("Test: wyswietlenie listy\n");
+    printAllPosts();
+
+    printf("Test: zwalnianie listy\n");
+    freeList();
+
+    printf("Test: wyswietlenie listy po freeList()\n");
+    printAllPosts();
 
     return 0;
 }

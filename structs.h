@@ -1,6 +1,11 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
+#include <stdio.h>
+
+#define MAX_AUTHOR 50
+#define MAX_CONTENT 280
+
 typedef enum{
     REPORT_SPAM,
     REPORT_HATE,
@@ -16,16 +21,24 @@ typedef enum{
     MODSTAT_DELETED
 }ModerationStatus;
 
-typedef struct Post {
+typedef struct {
     int id;
-    char author[100];
-    char content[280];
+    char author[MAX_AUTHOR];
+    char content[MAX_CONTENT];
     ReportType report;
     int reportsCount;
     ModerationStatus status;
 
-}Post;
+} Post;
+
+typedef struct PostNode {
+    Post data;
+    struct PostNode *next;
+} PostNode;
 
 void printPost(const Post *p);
+const char* reportTypeToStr(ReportType r);
+const char* statusToStr(ModerationStatus s);
+
 
 #endif
