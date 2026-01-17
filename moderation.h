@@ -15,6 +15,9 @@ int editPost(int id);
 int deletePostById(int id);
 int deletePostsByMinReports(int minReports);
 
+void searchByAuthorPrefix(const char *prefix);
+void searchByMinReports(int minReports);
+
 void printAllPosts(void);
 
 #endif

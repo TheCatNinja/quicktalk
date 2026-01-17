@@ -186,6 +186,45 @@ int deletePostsByMinReports(int minReports){
     return removed;
 }
 
+void searchByAuthorPrefix(const char *prefix){
+    size_t len = strlen(prefix);
+    PostNode *cur = head;
+    int found = 0;
+
+    while (cur) {
+        if (cur->data.status != MODSTAT_DELETED &&
+            strncmp(cur->data.author, prefix, len) == 0){
+                printPost(&cur->data);
+                printf("---\n");
+                found++;
+        }
+        cur = cur->next;
+    }
+
+    if (!found){
+        printf("Brak pasujacych postow.\n");
+    }
+}
+
+void searchByMinReports(int minReports){
+    PostNode *cur = head;
+    int found = 0;
+
+    while (cur) {
+        if (cur->data.status != MODSTAT_DELETED &&
+            cur->data.reportsCount >= minReports) {
+                printPost(&cur->data);
+                printf("---\n");
+                found++;
+        }
+        cur = cur->next;    
+    }
+
+    if (!found) {
+        printf("Brak postow spelniajacyh kryterium.\n");
+    }
+}
+
 void printAllPosts(void) {
     PostNode *cur = head;
     int idx = 0;
