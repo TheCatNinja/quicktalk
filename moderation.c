@@ -132,6 +132,60 @@ int editPost(int id){
     return 1;
 }
 
+int canDelete(const Post *p){
+    if (p->status == MODSTAT_TO_VERIFY || p->status == MODSTAT_UNDER_ANALYSIS){
+        return 0;
+    }
+    return 1;
+}
+
+int deletePostById(int id){
+    PostNode *cur = head;
+    PostNode *prev = NULL;
+
+    while (cur) {
+        if (cur->data.id == id){
+            if (!canDelete(&cur->data)){
+                printf("Nie mozna usunac posta ID %d -> status: %s.\n",
+                        id, statusToStr(cur->data.status));
+                return 0;
+            }
+            if (prev) prev->next = cur->next;
+            else head = cur->next;
+            free(cur);
+            printf("Usunieto post ID %d.\n", id);
+            return 1;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    printf("Nie znaleziono posta o ID %d.\n", id);
+    return 0;
+}
+
+int deletePostsByMinReports(int minReports){
+    PostNode *cur = head;
+    PostNode *prev = NULL;
+    int removed = 0;
+
+    while (cur) {
+        if (cur->data.reportsCount >= minReports && canDelete(&cur->data)){
+            PostNode *toDel = cur;
+            if (prev) prev->next = cur->next;
+            else head = cur->next;
+            cur = cur->next;
+            free(toDel);
+            removed++;
+            continue;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+
+    printf("Usunieto %d postow spelniajacych kryterium.\n", removed);
+    return removed;
+}
+
 void printAllPosts(void) {
     PostNode *cur = head;
     int idx = 0;

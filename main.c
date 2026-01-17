@@ -5,22 +5,30 @@ int main() {
     printf("Inicjowanie listy...\n");
     initList();
 
-    printf("Test: dodawanie posta\n");
-    addPost("TestUser", "Testowy post", REPORT_SPAM, 3);
+    printf("Dodawanie postow...\n");
+    addPost("Ala", "Post Ala", REPORT_SPAM, 1);
+    addPost("Bob", "Post Bob", REPORT_HATE, 5);
+    addPost("Cecylia", "Post Cecylia", REPORT_FAKE, 10);
 
-    printf("Test: wyswietlenie listy\n");
+    printf("Lista po dodaniu postow:\n");
     printAllPosts();
 
-    printf("Test: edycja posta o ID = 1\n");
-    editPost(1);
+    printf("Usuwanie posta o ID 2...\n");
+    deletePostById(2);
 
-    printf("Test: wyswietlenie listy po edycji\n");
+    printf("Lista po usunieciu posta o ID 2:\n");
     printAllPosts();
 
-    printf("Test: zwalnianie listy\n");
+    printf("Usuwanie postow z liczba zgloszen >= 5...\n");
+    deletePostsByMinReports(5);
+
+    printf("Lista po usunieciu postow z >= 5 zgloszen:\n");
+    printAllPosts();
+
+    printf("Zwalnianie listy...\n");
     freeList();
 
-    printf("Test: wyswietlenie listy po freeList()\n");
+    printf("Lista po freeList:\n");
     printAllPosts();
 
     return 0;
