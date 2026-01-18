@@ -225,6 +225,84 @@ void searchByMinReports(int minReports){
     }
 }
 
+static Post* toArray(int *outCount){
+    int count = 0;
+    PostNode *cur = head;
+    while (cur) {
+        if (cur->data.status != MODSTAT_DELETED)
+            count++;
+        cur = cur->next;
+    }
+
+    *outCount = count;
+    if (count == 0) return NULL;
+
+    Post *arr = malloc(sizeof(Post) * count);
+    if (!arr){
+        printf("Blad alokacji pamieci przy sortowaniu.\n");
+        *outCount = 0;
+        return NULL;
+    }
+
+    cur = head;
+    int i = 0;
+    while (cur) {
+        if (cur->data.status != MODSTAT_DELETED)
+            arr[i++] = cur->data;
+        cur = cur->next;
+    }
+
+    return arr;
+}
+
+static int cmpByAuthor(const void *a, const void *b){
+    const Post *pa = (const Post*)a;
+    const Post *pb = (const Post*)b;
+    return strcmp(pa->author, pb->author);
+}
+
+static int cmpByReports(const void *a, const void *b){
+    const Post *pa = (const Post*)a;
+    const Post *pb = (const Post*)b;
+    return (pa->reportsCount - pb->reportsCount);
+}
+
+void sortAndPrintByAuthor(void){
+    int count;
+    Post *arr = toArray(&count);
+    if (!arr) {
+        printf("Brak danych do sortowania (lub wszystkie usuniete).\n");
+        return;
+    }
+
+    qsort(arr, count, sizeof(Post), cmpByAuthor);
+    printf("Posortowane po autorze.\n");
+    for (int i = 0; i < count; i++) {
+        printPost(&arr[i]);
+        printf("\n");
+    }
+
+    free(arr);
+}
+
+void sortAndPrintByReports(void){
+    int count;
+    Post *arr = toArray(&count);
+    if (!arr) {
+        printf("Brak danych do sortowania (lub wszystkie usuniete).\n");
+        return;
+    }
+
+    qsort(arr, count, sizeof(Post), cmpByReports);
+    printf("Posortowane po liczbie zgloszen.\n");
+    for (int i = 0; i < count; i++) {
+        printPost(&arr[i]);
+        printf("\n");
+    }
+
+    free(arr);
+}
+
 void printAllPosts(void) {
     PostNode *cur = head;
     int idx = 0;

@@ -20,4 +20,7 @@ void searchByMinReports(int minReports);
 
 void printAllPosts(void);
 
+void sortAndPrintByAuthor(void);
+void sortAndPrintByReports(void);
+
 #endif
