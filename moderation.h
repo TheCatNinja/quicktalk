@@ -23,4 +23,7 @@ void printAllPosts(void);
 void sortAndPrintByAuthor(void);
 void sortAndPrintByReports(void);
 
+int saveToText(const char *filename);
+int loadFromText(const char *filename);
+
 #endif

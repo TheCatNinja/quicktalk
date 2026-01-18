@@ -303,6 +303,88 @@ void sortAndPrintByReports(void){
     free(arr);
 }
 
+int saveToText(const char *filename){
+    FILE *f = fopen(filename, "w");
+    if (!f) {
+        printf("Nie mozna otworzyc pliku do zapisu: %s\n", filename);
+        return 0;
+    }
+
+    PostNode *cur = head;
+    while (cur) {
+        const Post *p = &cur->data;
+        fprintf(f, "%d;%s;%s;%d;%d;%d\n",
+                p->id,
+                p->author,
+                p->content,
+                p->report,
+                p->reportsCount,
+                p->status);
+        cur = cur->next;
+    }
+
+    fclose(f);
+    return 1;
+}
+
+int loadFromText(const char *filename){
+    FILE *f = fopen(filename, "r");
+    if (!f) {
+        printf("Nie mozna otworzyc pliku do odczytu: %s\n", filename);
+        return 0;
+    }
+
+    freeList();
+    initList();
+
+    char line[1024];
+    int lineNo = 0;
+
+    while (fgets(line, sizeof(line), f)){
+        lineNo++;
+
+        char *idStr = strtok(line, ";");
+        char *author = strtok(NULL, ";");
+        char *content = strtok(NULL, ";");
+        char *reportStr = strtok(NULL, ";");
+        char *reportsCountStr = strtok(NULL, ";");
+        char *statusStr = strtok(NULL, ";\n");
+        
+        if (!idStr || !author || !content || !reportStr || !reportsCountStr || !statusStr){
+            printf("Nieprawidlowy format w linii %d - pomijam.\n", lineNo);
+            continue;
+        }
+
+        PostNode *node = malloc(sizeof(PostNode));
+        if (!node) {
+            printf("Blad alokacji pamieci podczas odczytu.\n");
+            fclose(f);
+            return 0;
+        }
+
+        node->data.id = atoi(idStr);
+
+        strncpy(node->data.author, author, MAX_AUTHOR -1);
+        node->data.author[MAX_AUTHOR - 1] = '\0';
+
+        strncpy(node->data.content, content, MAX_CONTENT - 1);
+        node->data.content[MAX_CONTENT - 1] = '\0';
+
+        node->data.report = (ReportType)atoi(reportStr);
+        node->data.reportsCount = atoi(reportsCountStr);
+        node->data.status = (ModerationStatus)atoi(statusStr);
+
+        node->next = head;
+        head = node;
+
+        if (node->data.id >= nextID)
+            nextID = node->data.id + 1;
+    }
+
+    fclose(f);
+    return 1;
+}
+
 void printAllPosts(void) {
     PostNode *cur = head;
     int idx = 0;

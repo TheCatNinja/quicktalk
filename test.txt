@@ -1,0 +1,3 @@
+3;Cecylia;Post Cecylii;3;10;0
+2;Bob;Post Boba;1;5;0
+1;Ala;Post Ala;0;1;0
