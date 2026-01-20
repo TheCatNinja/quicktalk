@@ -1,19 +1,17 @@
-CC=gcc
-CFLAGS=-Wall -Wextra -std=c11
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c11
+
+OBJS = main.o menu.o moderation.o structs.o
 
 all: app
 
-app: main.o moderation.o structs.o
-	$(CC) $(CFLAGS) -o app main.o moderation.o structs.o
+app: $(OBJS)
+	$(CC) $(CFLAGS) -o app $(OBJS)
 
-main.o: main.c structs.h
-	$(CC) $(CFLAGS) -c main.c
-
-moderation.o: moderation.c structs.h
-	$(CC) $(CFLAGS) -c moderation.c
-
-structs.o: structs.c structs.h
-	$(CC) $(CFLAGS) -c structs.c
+main.o: main.c menu.h moderation.h
+menu.o: menu.c menu.h moderation.h
+moderation.o: moderation.c moderation.h
+structs.o: structs.c moderation.h
 
 clean:
-	rm -f *.o app
+	del /Q *.o app.exe 2>nul || true
